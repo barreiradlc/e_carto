@@ -1,4 +1,5 @@
 import 'package:e_carto/Construtores/WikisContructor.dart';
+import 'package:e_carto/Parcial/Carousel.dart';
 import 'package:e_carto/Parcial/MateriaisList.dart';
 import 'package:e_carto/Recursos/Api.dart';
 import 'package:flutter/material.dart';
@@ -28,13 +29,34 @@ class Details extends State<DetailScreen> {
     }
 
     var thumb;
-    if (item.thumbnail == null) {
-      thumb = Image.asset('assets/logo.png');
-    } else {
+    var passoAPasso;
+    thumb = Image.asset('assets/logo.png');
+
+    if (item.thumbnail != null) {
       thumb = Image.network(host + item.thumbnail);
     }
 
-    print(item.steps[0]);
+    if (item.steps.length != 0) {
+      passoAPasso = RaisedButton(
+        padding: EdgeInsets.all(20),
+        onPressed: () {
+          showFancyCustomDialog(context);
+        },
+        color: Colors.white,
+        child: Text("Passo a passo"),
+      );
+    } else {
+      passoAPasso = RaisedButton(
+          padding: EdgeInsets.all(20),
+          onPressed: () {
+            // showFancyCustomDialog(context);
+          },
+          color: Colors.white70,
+          child: Text("Passo a passo indisponível",
+              style: TextStyle(color: Colors.white)));
+    }
+
+    // print(item.steps[0]);
 
     // Use the item to create the UI.
     return Scaffold(
@@ -50,68 +72,91 @@ class Details extends State<DetailScreen> {
                   height: 200.0,
                   width: MediaQuery.of(context).size.width,
                   color: Colors.green,
-                  child: thumb
-              ),
+                  child: thumb),
             ),
             Padding(
-              padding: EdgeInsets.all(15),
+              padding: EdgeInsets.all(25),
               child: Text(item.description), //
             ),
             MateriaisList(),
-            RaisedButton(
-              onPressed: () {
-                showFancyCustomDialog(context);
-              },
-              child: Text("Show Simple Custom Dialog"),
-            ),
+            passoAPasso,
             Container(
               alignment: Alignment(1.0, 1.0),
-              padding: EdgeInsets.all(5),
-              child: 
-                Text("Última atualização em: " + update), //
+              padding: EdgeInsets.fromLTRB(5, 45, 5, 5),
+              child: Text("Última atualização em: " + update), //
             )
           ])),
     );
   }
-    void showFancyCustomDialog(BuildContext context) {
-        final ScreenArguments item = ModalRoute.of(context).settings.arguments;
 
-        
-        Dialog fancyDialog = Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.0),
+  void showFancyCustomDialog(BuildContext context) {
+
+    final ScreenArguments item = ModalRoute.of(context).settings.arguments;
+
+
+    Dialog fancyDialog = Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        height: 300.0,
+        width: 300.0,
+        child: Stack(
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              child: CarouselList(item.steps),
             ),
-            height: MediaQuery.of(context).size.height / 0.5,
-            width: MediaQuery.of(context).size.width / 0.8,
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  width: double.infinity,
-                  height: 300,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
+            Container(
+              width: double.infinity,
+              height: 50,
+              alignment: Alignment.bottomCenter,
+              decoration: BoxDecoration(
+                color: Colors.greenAccent,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(12),
+                  topRight: Radius.circular(12),
                 ),
-                Container(
+              ),
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  item.title,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
                   width: double.infinity,
                   height: 50,
-                  alignment: Alignment.bottomCenter,
                   decoration: BoxDecoration(
-                    color: Colors.greenAccent,
+                    color: Colors.blue[300],
                     borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(12),
-                      topRight: Radius.circular(12),
+                      bottomLeft: Radius.circular(12),
+                      bottomRight: Radius.circular(12),
                     ),
                   ),
                   child: Align(
                     alignment: Alignment.center,
                     child: Text(
-                      "Fancy Dialog Title!",
+                      "Fechar",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -119,62 +164,37 @@ class Details extends State<DetailScreen> {
                     ),
                   ),
                 ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.blue[300],
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(12),
-                          bottomRight: Radius.circular(12),
-                        ),
-                      ),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Okay let's go!",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Align(
-            // These values are based on trial & error method
-                  alignment: Alignment(1.05, -1.05),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Icon(
-                        Icons.close,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-        );
-        showDialog(
-            context: context, builder: (BuildContext context) => fancyDialog);
-     }
+            Align(
+              // These values are based on trial & error method
+              alignment: Alignment(0.9, -0.9),
+              child: InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    // color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    Icons.close,
+                    color: Colors.white60,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    showDialog(
+        context: context, builder: (BuildContext context) => fancyDialog);
+  }
+
+
+
 }
 
 //  NetworkImage(host + item.thumbnail)
-
