@@ -51,6 +51,7 @@ class MyApp extends State<Geral> {
   var login = new Login();
   var cadastro = new Cadastro();
   var detalhes = new DetailScreen();
+  // var tutorial = new Tutorial();
   // var camera = new Camera();
 
   @override

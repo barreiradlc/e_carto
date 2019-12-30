@@ -76,7 +76,12 @@ class WikiState extends State<Wikis> {
                   context,
                   '/details',
                   arguments: ScreenArguments(
-                      wikis[index]['title'], wikis[index]['description']),
+                      wikis[index]['title'], 
+                      wikis[index]['description'],
+                      wikis[index]['avatar']['url'],
+                      DateTime.parse(wikis[index]['updated_at']),
+                      wikis[index]['steps'],
+                  ),
                 );
               },
               child: Container(
