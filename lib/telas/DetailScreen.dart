@@ -90,9 +90,7 @@ class Details extends State<DetailScreen> {
   }
 
   void showFancyCustomDialog(BuildContext context) {
-
     final ScreenArguments item = ModalRoute.of(context).settings.arguments;
-
 
     Dialog fancyDialog = Dialog(
       shape: RoundedRectangleBorder(
@@ -192,9 +190,6 @@ class Details extends State<DetailScreen> {
     showDialog(
         context: context, builder: (BuildContext context) => fancyDialog);
   }
-
-
-
 }
 
 //  NetworkImage(host + item.thumbnail)

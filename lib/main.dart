@@ -1,5 +1,6 @@
 
 import 'package:e_carto/telas/DetailScreen.dart';
+import 'package:e_carto/telas/EstoquePage.dart';
 import 'package:flutter/foundation.dart'
     show debugDefaultTargetPlatformOverride;
 import 'package:flutter/material.dart';
@@ -51,6 +52,7 @@ class MyApp extends State<Geral> {
   var login = new Login();
   var cadastro = new Cadastro();
   var detalhes = new DetailScreen();
+  var estoque = new EstoquePage();
   // var tutorial = new Tutorial();
   // var camera = new Camera();
 
@@ -72,6 +74,7 @@ class MyApp extends State<Geral> {
           '/home': (context) => inicio,
           '/extractArguments': (context) => ExtractArgumentsScreen(),
           '/details': (context) => detalhes,
+          '/estoque': (context) => estoque,
           // '/camera': (context) => camera,
           // '/camera': (context) => camera,
         },

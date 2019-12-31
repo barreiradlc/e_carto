@@ -13,16 +13,13 @@ import '../Funcoes/UserData.dart';
 void main() => runApp(Home());
 
 class Home extends StatelessWidget {
-  Widget build(BuildContext context) {
-    return  Scaffold(
-          // appBar: AppBar(
-          //   // title: Text('E_carto')
-          //   backgroundColor: Colors.transparent,
-          //   elevation: 0.0,
+  
 
-          //   ),
-          body: HomeState(),
-      
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // appBar: AppBar(title: RaisedButton(onPressed: () => { drawerScaff.build(context) })),
+      // drawer: drawerScaff,
+      body: HomeState(),
     );
   }
 }
@@ -31,7 +28,6 @@ class HomeState extends StatefulWidget {
   @override
   CollapsingList createState() => CollapsingList();
 }
-
 
 class CollapsingList extends State<HomeState> {
   String jwt = 'testeJWT';
@@ -56,7 +52,7 @@ class CollapsingList extends State<HomeState> {
 
     double height = MediaQuery.of(context).size.height;
 
-    if(this.username == ''){
+    if (this.username == '') {
       _getJWT();
     }
 
@@ -91,44 +87,27 @@ class CollapsingList extends State<HomeState> {
 
     return CustomScrollView(
       slivers: <Widget>[
-        SliverAppBar(
-          title: Text(
-            'Seja bem vindo(a): ' + this.username + "!",
-            textAlign: TextAlign.start,
-            overflow: TextOverflow.ellipsis,
-            style:
-                TextStyle(fontWeight: FontWeight.bold, color: Colors.black45),
-          ),
-          // backgroundColor: Color((math.Random().nextDouble() * 0xFFFFFF).toInt() << 0).withOpacity(1.0),
-          backgroundColor: Colors.green,
-          expandedHeight: 200.0,
-        automaticallyImplyLeading: false,
-          flexibleSpace: FlexibleSpaceBar(
-            // background: Image.asset('assets/logo.png', fit: BoxFit.fitWidth),
-            background: Container(
-              color: Colors.blue,
 
-              // child: Row(
-              //   children: <Widget>[
-              //     Column(
-              //       children: <Widget>[
-              //         Container(child:
-              //         Text("Reutilizaste 34 itens este mês")
-              //         )
-              //       ],
-              //     ),
-              //     Column(
-              //       children: <Widget>[
-              //         Container(child:
-              //           Text("Reutilizaste 34 itens este mês")
-              //         ,)
-              //       ],
-              //     )
-              //   ],
-              // ),
-            ),
-          ),
-        ),
+        // SliverAppBar(
+        //   title: Text(
+        //     'Seja bem vindo(a): ' + this.username + "!",
+        //     textAlign: TextAlign.start,
+        //     overflow: TextOverflow.ellipsis,
+        //     style:
+        //         TextStyle(fontWeight: FontWeight.bold, color: Colors.black45),
+        //   ),
+
+        //   // backgroundColor: Color((math.Random().nextDouble() * 0xFFFFFF).toInt() << 0).withOpacity(1.0),
+        //   backgroundColor: Colors.green,
+        //   expandedHeight: 200.0,
+        //   automaticallyImplyLeading: false,
+        //   flexibleSpace: FlexibleSpaceBar(
+        //     background: Container(
+        //       color: Colors.blue,
+        //     ),
+        //   ),
+        // ),
+
         SliverFixedExtentList(
           itemExtent: height,
           delegate: SliverChildListDelegate(
