@@ -63,7 +63,8 @@ class WikiState extends State<Wikis> {
           } else {
             bg = NetworkImage(uri + wikis[index]['avatar']['url']);
           }
-          return new Container(
+          
+          return new Container( 
                 padding: EdgeInsets.only(bottom: 30),
                 child:
            RaisedButton(

@@ -1,65 +1,233 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class EstoquePage extends StatefulWidget {
-  // EstoquePage({Key key, this.title}) : super(key: key);
-  // final String title = ;
+import '../db_test.dart' as db;
 
+class EstoquePage extends StatefulWidget {
   @override
   _EstoquePageState createState() => _EstoquePageState();
 }
 
 class _EstoquePageState extends State<EstoquePage> {
-  int _counter = 0;
+  var estoque;
+  String label;
+
+  bool form = true;
+
+  var nome = TextEditingController(text: '');
+  var idade = TextEditingController(text: '');
+  var id = TextEditingController(text: '');
 
   @override
   void initState() {
     super.initState();
-    _loadCounter();
+    list();
   }
 
-  //Loading counter value on start
-  _loadCounter() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  void formDialogModal(dog, status) async {
+    print(dog);
+    print(status);
+    print(status);
+    print(status);
+
     setState(() {
-      _counter = (prefs.getInt('counter') ?? 0);
+      nome.text = status == 'edit' ? dog.name : '';
+      idade.text = status == 'edit' ? dog.age.toString() : '';
+      id.text = status == 'edit' ? dog.id.toString() : '';
+      label = status == 'edit' ? 'Editar' : 'Adicionar';
+    });
+
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return Container(
+                  height: 60,
+            child: AlertDialog(
+          // Retrieve the text the that user has entered by using the
+          // TextEditingController.
+          backgroundColor: Colors.white,
+          content: Scaffold(
+              backgroundColor: Colors.white,
+              body: Column(children: <Widget>[
+                Container(
+                    padding: EdgeInsets.only(bottom: 10),
+                    child: TextField(
+                      controller: nome,
+                      // obscureText: true,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(5.0),
+                          ),
+                        ),
+                        labelText: 'Nome',
+                      ),
+                      autofocus: true,
+                    )),
+                Container(
+                    padding: EdgeInsets.only(bottom: 10),
+                    child: TextField(
+                      controller: idade,
+                      // obscureText: true,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(5.0),
+                          ),
+                        ),
+                        labelText: 'Idade',
+                      ),
+                      // autofocus: true,
+                    )),
+
+                // alignment: Alignment(1.0, 1.0),
+                RaisedButton(
+                    color: Colors.green,
+                    padding: EdgeInsets.all(5),
+                    onPressed: add,
+                    child: Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Icons.add_circle_outline,
+                            color: Colors.white,
+                          ),
+                          Text(label, style: TextStyle(color: Colors.white))
+                        ],
+                      ),
+                    ))
+              ])),
+        ));
+      },
+    );
+  }
+
+  void formDialog(id) async {
+    print(id);
+    await db.DbFunctionsState().openDB().then((d) {
+      db.DbFunctionsState().dog(id, d).then((dog) {
+        formDialogModal(dog, 'edit');
+      });
     });
   }
 
-  //Incrementing counter after click
-  _incrementCounter() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _counter = (prefs.getInt('counter') ?? 0) + 1;
-      prefs.setInt('counter', _counter);
+  void remove(index) async {
+    print(index);
+    db.DbFunctionsState().openDB().then((d) {
+      db.DbFunctionsState().deleteDog(index.id, d);
+    });
+    list();
+  }
+
+  add() async {
+    print('add');
+    db.DbFunctionsState().openDB().then((d) {
+      db.DbFunctionsState().insertDog(
+          db.Dog(
+              id: int.parse(id.text),
+              age: int.parse(idade.text),
+              name: nome.text),
+          d);
+    });
+    list();
+  }
+
+  list() async {
+    print('list');
+    await db.DbFunctionsState().openDB().then((d) {
+      db.DbFunctionsState().dogs(d).then((estoque) {
+        print('estoque');
+        print(estoque);
+        setState(() {
+          this.estoque = estoque;
+        });
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('widget.title'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
+    if (estoque != null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Estoque'),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        // body: Center(
+        body: Container(
+            child: Stack(children: <Widget>[
+          ListView.builder(
+              itemCount: this.estoque == null ? 0 : this.estoque.length,
+              itemBuilder: (BuildContext context, int index) {
+                print('index');
+                print('index');
+                print('index');
+                print(index);
+                return Container(
+                    padding: EdgeInsets.only(bottom: 5),
+                    child: RaisedButton(
+                        color: Colors.white,
+                        onPressed: () => formDialog(this.estoque[index].id),
+                        child: Container(
+                            padding: EdgeInsets.all(10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text(this.estoque[index].name),
+                                IconButton(
+                                  padding: EdgeInsets.all(2),
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () => remove(this.estoque[index]),
+                                ),
+                              ],
+                            )
+                            // child: ,
+                            )));
+              }),
+        ])),
+        bottomNavigationBar: BottomAppBar(
+          shape: const CircularNotchedRectangle(),
+          child: Container(height: 50),
+        ),
+        floatingActionButton: FloatingActionButton(
+          // When the user presses the button, show an alert dialog containing
+          // the text that the user has entered into the text field.
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.green,
+          onPressed: () => formDialogModal(null, 'new'),
+          tooltip: 'Show me the value!',
+          child: Icon(Icons.add),
+        ),
+
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      );
+      //   ),
+      // );
+    }
+    return Scaffold(
+        body: Container(
+            child: Center(
+                // child: CircularProgressIndicator()
+                child: Column(
+      children: <Widget>[
+        RaisedButton(
+          // onPressed:() => db.Dog(age: 23, id: 22, name: 'Rudolph'),
+          onPressed: add,
+
+          // onPressed:() => {
+          //   db.insertDog({ age: 23, id: 22, name: 'Rudolph' })
+          // },
+        ),
+        RaisedButton(
+          // onPressed:() => db.Dog(age: 23, id: 22, name: 'Rudolph'),
+          onPressed: list,
+          child: Text('list'),
+
+          // onPressed:() => {
+          //   db.insertDog({ age: 23, id: 22, name: 'Rudolph' })
+          // },
+        ),
+      ],
+    ))));
   }
 }
