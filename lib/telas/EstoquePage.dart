@@ -15,7 +15,7 @@ class _EstoquePageState extends State<EstoquePage> {
   bool form = true;
 
   var nome = TextEditingController(text: '');
-  var idade = TextEditingController(text: '');
+  var idade = TextEditingController(text: '1');
   var id = TextEditingController(text: '');
 
   @override
@@ -41,14 +41,15 @@ class _EstoquePageState extends State<EstoquePage> {
       context: context,
       builder: (context) {
         return Container(
-                  height: 60,
+            height: 60,
             child: AlertDialog(
-          // Retrieve the text the that user has entered by using the
-          // TextEditingController.
-          backgroundColor: Colors.white,
-          content: Scaffold(
+              // Retrieve the text the that user has entered by using the
+              // TextEditingController.
               backgroundColor: Colors.white,
-              body: Column(children: <Widget>[
+              content: Form(
+                  // backgroundColor: Colors.white,
+                  child:
+                      Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
                 Container(
                     padding: EdgeInsets.only(bottom: 10),
                     child: TextField(
@@ -75,7 +76,7 @@ class _EstoquePageState extends State<EstoquePage> {
                             const Radius.circular(5.0),
                           ),
                         ),
-                        labelText: 'Idade',
+                        labelText: 'Quantidade',
                       ),
                       // autofocus: true,
                     )),
@@ -98,7 +99,7 @@ class _EstoquePageState extends State<EstoquePage> {
                       ),
                     ))
               ])),
-        ));
+            ));
       },
     );
   }
@@ -121,16 +122,25 @@ class _EstoquePageState extends State<EstoquePage> {
   }
 
   add() async {
-    print('add');
+    if (id.text == null) {
+      print("NOVO ITEM");
+    }
+
+    print(id.text);
+
+    var dog = db.Dog(
+        // id: id.text != '' ? int.parse(id.text) : 0,
+        age: int.parse(idade.text),
+        name: nome.text);
+
     db.DbFunctionsState().openDB().then((d) {
-      db.DbFunctionsState().insertDog(
-          db.Dog(
-              id: int.parse(id.text),
-              age: int.parse(idade.text),
-              name: nome.text),
-          d);
+      db.DbFunctionsState()
+          .insertDog(dog, d, id.text != '' ? int.parse(id.text) : null)
+          .then((v) {
+        list();
+        Navigator.pop(context, v);
+      });
     });
-    list();
   }
 
   list() async {
@@ -174,11 +184,21 @@ class _EstoquePageState extends State<EstoquePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Text(this.estoque[index].name),
-                                IconButton(
-                                  padding: EdgeInsets.all(2),
-                                  icon: Icon(Icons.delete),
-                                  onPressed: () => remove(this.estoque[index]),
-                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Text(
+                                      this.estoque[index].age.toString() +
+                                          " Disponíveis",
+                                      style: TextStyle(color: Colors.green)
+                                    ),
+                                    IconButton(
+                                      padding: EdgeInsets.all(2),
+                                      icon: Icon(Icons.delete),
+                                      onPressed: () =>
+                                          remove(this.estoque[index]),
+                                    ),
+                                  ],
+                                )
                               ],
                             )
                             // child: ,
@@ -206,28 +226,10 @@ class _EstoquePageState extends State<EstoquePage> {
     }
     return Scaffold(
         body: Container(
-            child: Center(
-                // child: CircularProgressIndicator()
-                child: Column(
-      children: <Widget>[
-        RaisedButton(
-          // onPressed:() => db.Dog(age: 23, id: 22, name: 'Rudolph'),
-          onPressed: add,
-
-          // onPressed:() => {
-          //   db.insertDog({ age: 23, id: 22, name: 'Rudolph' })
-          // },
-        ),
-        RaisedButton(
-          // onPressed:() => db.Dog(age: 23, id: 22, name: 'Rudolph'),
-          onPressed: list,
-          child: Text('list'),
-
-          // onPressed:() => {
-          //   db.insertDog({ age: 23, id: 22, name: 'Rudolph' })
-          // },
-        ),
-      ],
-    ))));
+          child: Center(
+            child: CircularProgressIndicator(backgroundColor: Colors.blue,)
+          )
+        )
+    );
   }
 }

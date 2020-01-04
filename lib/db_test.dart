@@ -44,30 +44,38 @@ class DbFunctionsState extends State<DbFunctions> {
     return database;
   }
 
-  Future<void> insertDog(Dog dog, database) async {
+  Future<bool> insertDog(Dog dog, database, id) async {
+    print('dog');
+    print(dog);
     final Database db = await database;
 
     print(dog);
-    print(dog.id);
-    final List<Map<String, dynamic>> dogItem = await db.query('dogs WHERE ID = ${dog.id}');
+    print(id);
 
-    if(dogItem[0].length == 0){
+    final List<Map<String, dynamic>> dogItem = await db.query('dogs WHERE ID = $id');
+
+
+    print('dogItem');
+    print(dogItem);
+
+    if(dogItem.length == 0){
       await db.insert(
         'dogs',
         dog.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } else {
+        dog.id = id;
       await db.update(
         'dogs',
         dog.toMap(),
         // Ensure that the Dog has a matching id.
         where: "id = ?",
         // Pass the Dog's id as a whereArg to prevent SQL injection.
-        whereArgs: [dog.id],
+        whereArgs: [id],
       );
     }
-
+    return true;
   }
 
   Future<void> updateDog(Dog dog) async {
@@ -210,9 +218,9 @@ Future<Dog> dog(id,database) async {
 // }
 
 class Dog {
-  final int id;
-  final String name;
+  int id;
   final int age;
+  final String name;
 
   Dog({this.id, this.name, this.age});
 
