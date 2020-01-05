@@ -8,12 +8,12 @@ import '../main.dart';
 
 import 'package:intl/intl.dart';
 
-class DetailScreen extends StatefulWidget {
+class DetailItemScreen extends StatefulWidget {
   @override
-  Details createState() => new Details();
+  DetailItems createState() => new DetailItems();
 }
 
-class Details extends State<DetailScreen> {
+class DetailItems extends State<DetailItemScreen> {
   @override
   Widget build(BuildContext context) {
     // var todo = ModalRoute.of(context).settings.arguments;
@@ -36,32 +36,32 @@ class Details extends State<DetailScreen> {
       thumb = Image.network(host + item.thumbnail);
     }
 
-    if (item.steps.length != 0) {
-      passoAPasso = RaisedButton(
-        padding: EdgeInsets.all(20),
-        onPressed: () {
-          showFancyCustomDialog(context);
-        },
-        color: Colors.white,
-        child: Text("Passo a passo"),
-      );
-    } else {
-      passoAPasso = RaisedButton(
-          padding: EdgeInsets.all(20),
-          onPressed: () {
-            // showFancyCustomDialog(context);
-          },
-          color: Colors.white70,
-          child: Text("Passo a passo indisponível",
-              style: TextStyle(color: Colors.white)));
-    }
+    // if (item.steps.length != 0) {
+    //   passoAPasso = RaisedButton(
+    //     padding: EdgeInsets.all(20),
+    //     onPressed: () {
+    //       showFancyCustomDialog(context);
+    //     },
+    //     color: Colors.white,
+    //     child: Text("Passo a passo"),
+    //   );
+    // } else {
+    //   passoAPasso = RaisedButton(
+    //       padding: EdgeInsets.all(20),
+    //       onPressed: () {
+    //         // showFancyCustomDialog(context);
+    //       },
+    //       color: Colors.white70,
+    //       child: Text("Passo a passo indisponível",
+    //           style: TextStyle(color: Colors.white)));
+    // }
 
     // print(item.steps[0]);
 
     // Use the item to create the UI.
     return Scaffold(
       appBar: AppBar(
-        title: Text(item.title),  
+        title: Text(item.title),
       ),
       body: Padding(
           padding: EdgeInsets.all(0),
@@ -78,8 +78,20 @@ class Details extends State<DetailScreen> {
               padding: EdgeInsets.all(25),
               child: Text(item.description), //
             ),
-            MateriaisList(),
-            passoAPasso,
+            Container(
+              child:RaisedButton(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                  Icon(Icons.chat),
+                  Text("Contatar autor")
+                ],), 
+                onPressed: () => print('contatar')
+              )
+            ),
+            // MateriaisList(),
+            // passoAPasso,
             Container(
               alignment: Alignment(1.0, 1.0),
               padding: EdgeInsets.fromLTRB(5, 45, 5, 5),
@@ -93,7 +105,6 @@ class Details extends State<DetailScreen> {
     final ScreenArguments item = ModalRoute.of(context).settings.arguments;
 
     Dialog fancyDialog = Dialog(
-
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
       ),
@@ -101,8 +112,8 @@ class Details extends State<DetailScreen> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),
         ),
-        height: double.infinity,
-        width: double.infinity,
+        height: 300.0,
+        width: 300.0,
         child: Stack(
           children: <Widget>[
             Container(

@@ -65,7 +65,7 @@ class MateriaiState extends State<Materiais> {
           } else {
             bg = NetworkImage(uri + items[index]['avatar']['url']);
           }
-          
+          if(items[index]['nature'] == 'MATERIAL'){
           return new Container( 
                 padding: EdgeInsets.only(bottom: 30),
                 child:
@@ -75,18 +75,19 @@ class MateriaiState extends State<Materiais> {
               onPressed: () {
                 // When the user taps the button, navigate to a named route
                 // and provide the arguments as an optional parameter.
-                // Navigator.pushNamed(
-                //   context,
-                //   '/details',
-                //   arguments: ScreenArguments(
-                //       items[index]['title'], 
-                //       items[index]['description'],
-                //       items[index]['avatar']['url'],
-                //       DateTime.parse(items[index]['updated_at']),
-                //       items[index]['steps'],
-                //   ),
-                // );
-                print('pokebola vai');
+                Navigator.pushNamed(
+                  context,
+                  '/item',
+                  arguments: ScreenArguments(
+                      items[index]['title'], 
+                      items[index]['description'],
+                      items[index]['avatar']['url'],
+                      DateTime.parse(items[index]['updated_at']),
+                      null
+                      // items[index]['steps'],
+                  ),
+                );
+                // print('pokebola vai');
               },
               child: Container(
                 child: new Center(
@@ -135,6 +136,13 @@ class MateriaiState extends State<Materiais> {
                     ],
                   ),
                 ))));
+          } else {
+            // return Container(
+            //   child: Center(
+            //     child: CircularProgressIndicator(backgroundColor: Colors.blueAccent),
+            //   ),
+            // );
+          }
               
         },
       ),

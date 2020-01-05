@@ -30,8 +30,7 @@ class DbFunctionsState extends State<DbFunctions> {
         return db.execute(
           "CREATE TABLE dogs(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, age INTEGER)",
         );
-      },
-
+      },  
       // Set the version. This executes the onCreate function and provides a
       // path to perform database upgrades and downgrades.
       version: 2,

@@ -34,7 +34,8 @@ class CarouselLisState extends State<CarouselList> {
     //   );
 
       return CarouselSlider(
-      height: double.infinity - 150.0,
+      height: double.infinity,
+      
       // aspectRatio: 16 / 9,
       // viewportFraction: 0.8,
       // initialPage: 0,

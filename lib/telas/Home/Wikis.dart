@@ -63,78 +63,85 @@ class WikiState extends State<Wikis> {
           } else {
             bg = NetworkImage(uri + wikis[index]['avatar']['url']);
           }
-          
-          return new Container( 
-                padding: EdgeInsets.only(bottom: 30),
-                child:
-           RaisedButton(
-             padding: EdgeInsets.all(0),
-              color: Colors.white,
-              onPressed: () {
-                // When the user taps the button, navigate to a named route
-                // and provide the arguments as an optional parameter.
-                Navigator.pushNamed(
-                  context,
-                  '/details',
-                  arguments: ScreenArguments(
-                      wikis[index]['title'], 
-                      wikis[index]['description'],
-                      wikis[index]['avatar']['url'],
-                      DateTime.parse(wikis[index]['updated_at']),
-                      wikis[index]['steps'],
-                  ),
-                );
-              },
-              child: Container(
-                child: new Center(
-                  child: new Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: bg,
-                            fit: BoxFit.cover,
-                            colorFilter: new ColorFilter.mode(
-                                Colors.black.withOpacity(0.6),
-                                BlendMode.dstATop),
+
+          return new Container(
+              padding: EdgeInsets.only(bottom: 30),
+              child: RaisedButton(
+                  padding: EdgeInsets.all(0),
+                  color: Colors.white,
+                  onPressed: () {
+                    // When the user taps the button, navigate to a named route
+                    // and provide the arguments as an optional parameter.
+                    Navigator.pushNamed(
+                      context,
+                      '/details',
+                      arguments: ScreenArguments(
+                        wikis[index]['title'],
+                        wikis[index]['description'],
+                        wikis[index]['avatar']['url'],
+                        DateTime.parse(wikis[index]['updated_at']),
+                        wikis[index]['steps'],
+                      ),
+                    );
+                  },
+                  child: Container(
+                      child: new Center(
+                    child: new Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: bg,
+                              fit: BoxFit.cover,
+                              colorFilter: new ColorFilter.mode(
+                                  Colors.black.withOpacity(0.6),
+                                  BlendMode.dstATop),
+                            ),
                           ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              child: Text(
-                                wikis[index]['title'],
-                                textAlign: TextAlign.start,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                child: Text(
+                                  wikis[index]['title'],
+                                  textAlign: TextAlign.start,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
+                                padding: const EdgeInsets.all(20),
                               ),
-                              padding: const EdgeInsets.all(20),
-                            ),
-                            Container(
-                              child: Text(
-                                wikis[index]['description'],
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87),
+                              Container(
+                                child: Text(
+                                  wikis[index]['description'],
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87),
+                                ),
+                                padding: const EdgeInsets.all(20),
                               ),
-                              padding: const EdgeInsets.all(20),
-                            ),
-                          ],
-                        ),
-                      )
-                      // Text(wikis[index]['description'])
-                    ],
-                  ),
-                ))));
-              
+                            ],
+                          ),
+                        )
+                        // Text(wikis[index]['description'])
+                      ],
+                    ),
+                  ))));
         },
       ),
+      floatingActionButton: FloatingActionButton(
+          // When the user presses the button, show an alert dialog containing
+          // the text that the user has entered into the text field.
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.green,
+          onPressed: () {Navigator.pushNamed(context, '/wiki/form');},
+          tooltip: 'Criar Wiki',
+          child: Icon(Icons.add),
+        ),
     );
   }
 }

@@ -1,6 +1,8 @@
 
 import 'package:e_carto/telas/DetailScreen.dart';
 import 'package:e_carto/telas/EstoquePage.dart';
+import 'package:e_carto/telas/Etapas.dart';
+import 'package:e_carto/telas/NewWikiPage.dart';
 import 'package:flutter/foundation.dart'
     show debugDefaultTargetPlatformOverride;
 import 'package:flutter/material.dart';
@@ -14,6 +16,7 @@ import './telas/Cadastro.dart';
 import 'package:e_carto/telas/Home/ExtractArgumentsScreen.dart';
 
 import './Funcoes/UserData.dart';
+import 'telas/DetailItemScreen.dart';
 
 void main() {
   // See https://github.com/flutter/flutter/wiki/Desktop-shells#target-platform-override
@@ -52,7 +55,11 @@ class MyApp extends State<Geral> {
   var login = new Login();
   var cadastro = new Cadastro();
   var detalhes = new DetailScreen();
+  var item = new DetailItemScreen();
   var estoque = new EstoquePage();
+  
+  var formWiki = new FormWikiPage();
+  var formSteps = new Etapas();
   // var tutorial = new Tutorial();
   // var camera = new Camera();
 
@@ -72,10 +79,14 @@ class MyApp extends State<Geral> {
           '/cadastro': (context) => cadastro,
           // When navigating to the "/second" route, build the SecondScreen widget.
           '/home': (context) => inicio,
-          '/extractArguments': (context) => ExtractArgumentsScreen(),
+          
           '/details': (context) => detalhes,
+          '/item': (context) => item,
           '/estoque': (context) => estoque,
-          // '/camera': (context) => camera,
+
+
+          '/wiki/form': (context) => formWiki,
+          '/steps/form': (context) => formSteps,
           // '/camera': (context) => camera,
         },
         debugShowCheckedModeBanner: false,
