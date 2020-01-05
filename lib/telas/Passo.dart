@@ -17,12 +17,15 @@ class _PassoState extends State<Passo> {
 
     var bg;
     bg = AssetImage("assets/logo.png");
-    if (widget.i['avatar']['url'] != null) {
-      bg = NetworkImage(host + widget.i['avatar']['url']);
+    if (widget.estado == 'editar') {
+      if (widget.i['avatar']['url'] != null) {
+        bg = NetworkImage(host + widget.i['avatar']['url']);
+      }
     }
 
     print(widget.estado);
 
+    if (widget.estado == 'editar') {
     return Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -54,5 +57,15 @@ class _PassoState extends State<Passo> {
                     style: TextStyle(fontSize: 16.0),
                   ))
             ]));
+  } else {
+    return Container(
+      child: Form(
+        child: Column(
+          children: <Widget>[
+            Text('Novo Passo')
+          ],
+        )),
+    );
   }
+}
 }

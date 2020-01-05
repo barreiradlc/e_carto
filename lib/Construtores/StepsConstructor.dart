@@ -1,5 +1,5 @@
 class StepsArguments {
-  final String id;
+  final int id;
   final String title;
   
   var steps;

@@ -42,41 +42,40 @@ class EtapaState extends State<Etapas> {
 
       print('------');
       print('------');
-      print(item);
+      print(item.title);
+      print(item.steps.length);
       print('------');
       print('------');
 
-    //   var etapas = CarouselSlider(
-    //   height: double.infinity,
+      var etapas = item.steps.length != 0 ? CarouselSlider(
+      height: double.infinity,
       
-    //   // aspectRatio: 16 / 9,
-    //   // viewportFraction: 0.8,
-    //   // initialPage: 0,
-    //   enableInfiniteScroll: false,
-    //   // reverse: false,
-    //   autoPlay: false,
-    //   // autoPlayInterval: Duration(seconds: 3),
-    //   // autoPlayAnimationDuration: Duration(milliseconds: 800),
-    //   //  autoPlayCurve: Curve.fastOutSlowIn,
-    //   // pauseAutoPlayOnTouch: Duration(seconds: 10),
-    //   enlargeCenterPage: true,
-    //   //  onPageChanged: callbackFunction,
-    //   scrollDirection: Axis.horizontal,
+      // aspectRatio: 16 / 9,
+      // viewportFraction: 0.8,
+      // initialPage: 0,
+      enableInfiniteScroll: false,
+      // reverse: false,
+      autoPlay: false,
+      // autoPlayInterval: Duration(seconds: 3),
+      // autoPlayAnimationDuration: Duration(milliseconds: 800),
+      //  autoPlayCurve: Curve.fastOutSlowIn,
+      // pauseAutoPlayOnTouch: Duration(seconds: 10),
+      enlargeCenterPage: true,
+      //  onPageChanged: callbackFunction,
+      scrollDirection: Axis.horizontal,
 
-    //   items: widget.item.map<Widget>((i, index) {
+      items: item.steps.map((i, index) {
 
-    //     return Builder(
-    //       builder: (BuildContext context) {
-    //         if(i[index] == null){
-    //           return Passo(i[index], 'editar');
-    //         }
-    //           return Passo(i[index], 'criar');
-    //       },
-    //     );
+        return Builder(
+          builder: (BuildContext context) {
+              return Passo(i[index], 'editar');
+          },
+        );
         
-    //   }).toList(),
+      }).toList(),
 
-    // );
+    ) : Passo(item.id, 'criar');
+
     
     return Scaffold(
       appBar: AppBar(
@@ -84,7 +83,7 @@ class EtapaState extends State<Etapas> {
       ),
       body: Column(
         children: <Widget>[
-          // etapas,
+          etapas,
         ],
       )
     );

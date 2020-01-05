@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -70,20 +71,30 @@ class _FormWikiPageState extends State<FormWikiPage> {
     print(formData);
     print('formData');
 
-    print(response.id);
+    print('re sponse');
+    print(response);
     print('response');
+    var res = response.data;
+    // var id = int.parse(res['id']);
 
-    if(response.id != null){
+
+    // print(id);
+
+    if(res['id'] != null){
       await Navigator.pushNamed(
         context,
-        '/etapas',
+        '/steps/form',
         arguments: StepsArguments(
-          response.id,
-          response.title,
-          response.steps
+          res['id'],
+          res['title'],
+          res['steps']
         )
       );
     }
+
+
+
+
 
     // http.Response response = await http.post(Uri.encodeFull(url + endpoint),
     //     body: {
