@@ -34,7 +34,7 @@ class ArteState extends State<Artes> {
   }
 
   Future<String> getData() async {
-    var response = await http.get(Uri.encodeFull(uri + '/items'),
+    var response = await http.get(Uri.encodeFull(uri + '/arte'),
         headers: {"Authorization": this.jwt});
 
     print(response);
@@ -73,19 +73,18 @@ class ArteState extends State<Artes> {
              padding: EdgeInsets.all(0),
               color: Colors.white,
               onPressed: () {
-                // When the user taps the button, navigate to a named route
-                // and provide the arguments as an optional parameter.
-                // Navigator.pushNamed(
-                //   context,
-                //   '/details',
-                //   arguments: ScreenArguments(
-                //       items[index]['title'], 
-                //       items[index]['description'],
-                //       items[index]['avatar']['url'],
-                //       DateTime.parse(items[index]['updated_at']),
-                //       items[index]['steps'],
-                //   ),
-                // );
+      Navigator.pushNamed(
+                  context,
+                  '/item',
+                  arguments: ScreenArguments(
+                      items[index]['title'], 
+                      items[index]['description'],
+                      items[index]['avatar']['url'],
+                      DateTime.parse(items[index]['updated_at']),
+                      null
+                      // items[index]['steps'],
+                  ),
+                );
                 print('pokebola vai');
               },
               child: Container(
@@ -141,6 +140,15 @@ class ArteState extends State<Artes> {
               
         },
       ),
+      floatingActionButton: FloatingActionButton(
+          // When the user presses the button, show an alert dialog containing
+          // the text that the user has entered into the text field.
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.blue,
+          onPressed: () {Navigator.pushNamed(context, '/itens/form', arguments:"arte");},
+          tooltip: 'Criar Arte',
+          child: Icon(Icons.add),
+        ),
     );
   }
 }

@@ -146,6 +146,16 @@ class MateriaiState extends State<Materiais> {
               
         },
       ),
+      floatingActionButton: FloatingActionButton(
+          // When the user presses the button, show an alert dialog containing
+          // the text that the user has entered into the text field.
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.blue,
+          onPressed: () {Navigator.pushNamed(context, '/itens/form', arguments:"material");},
+          tooltip: 'Criar Material',
+          child: Icon(Icons.add),
+        ),
     );
   }
 }
+

@@ -33,7 +33,11 @@ class DetailItems extends State<DetailItemScreen> {
     thumb = Image.asset('assets/logo.png');
 
     if (item.thumbnail != null) {
-      thumb = Image.network(host + item.thumbnail);
+      thumb = Image.network(
+        host + item.thumbnail, 
+        fit: BoxFit.cover, 
+        alignment: Alignment.center
+      );
     }
 
     // if (item.steps.length != 0) {
@@ -69,10 +73,10 @@ class DetailItems extends State<DetailItemScreen> {
             Padding(
               padding: EdgeInsets.only(bottom: 15),
               child: Container(
-                  height: 200.0,
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.green,
-                  child: thumb),
+                  height: 250.0,
+                  
+                  child: thumb
+              ),
             ),
             Padding(
               padding: EdgeInsets.all(25),
