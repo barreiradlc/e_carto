@@ -18,6 +18,7 @@ import './Funcoes/UserData.dart';
 import 'telas/DetailItemScreen.dart';
 import 'telas/Itens/Form.dart';
 import 'telas/Perfil.dart';
+import 'telas/User/FormUserPage.dart';
 
 void main() {
   // See https://github.com/flutter/flutter/wiki/Desktop-shells#target-platform-override
@@ -61,6 +62,7 @@ class MyApp extends State<Geral> {
   var perfil = new Perfil();
 
   var formItem = new FormItemPage();
+  var formUser = new FormUserPage();
   var formWiki = new FormWikiPage();
   var formSteps = new Etapas();
   // var tutorial = new Tutorial();
@@ -88,6 +90,7 @@ class MyApp extends State<Geral> {
           '/perfil': (context) => perfil,
 
           '/itens/form': (context) => formItem,
+          '/user/form': (context) => formUser,
 
           '/wiki/form': (context) => formWiki,
           '/steps/form': (context) => formSteps,

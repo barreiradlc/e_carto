@@ -86,10 +86,13 @@ class DetailItems extends State<DetailItemScreen> {
                         :  Container(),
 
                     autor['email'] != null
-                        ? ListTile(
-                            title: Text('Email: ' + autor['email']),
-                          )
-                        :  Container(),
+                        ? 
+                        ListTile(
+                        title: InkWell(
+                          child: Text('Email:' + autor['email']),
+                          onTap: () => launch('mailto:' + autor['email']),
+                        ),
+                      ) :  Container(),
 
                     autor['instagram'] != null
                         ? ListTile(

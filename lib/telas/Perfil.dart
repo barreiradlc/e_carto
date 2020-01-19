@@ -1,3 +1,4 @@
+import 'package:e_carto/Construtores/PerfilArguments.dart';
 import 'package:e_carto/Recursos/Api.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
@@ -51,7 +52,23 @@ class _PerfilState extends State<Perfil> {
 
         if( profile['id'] == id){
       botaoPerfil = new FlatButton(
-        onPressed: () {},
+        onPressed: () {
+        print('pokebola vai');
+          Navigator.pushNamed(
+                      context,
+                      '/user/form',
+                      arguments: PerfilArguments(
+                        profile['name'],
+                        profile['username'],
+                        profile['email'],
+                        profile['phone'],
+                        profile['instagram'],
+                        profile['pinterest'],
+                        profile['about'],
+                      )
+          );
+        print('pokebola foi');
+        },
         child: new Container(
             child: new Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -67,7 +84,16 @@ class _PerfilState extends State<Perfil> {
       );
     } else {
       botaoPerfil = new FlatButton(
-        onPressed: () {},
+        onPressed: () {
+          return showDialog(
+            context: context,
+            builder: (context) {
+              return Container(
+                child: AlertDialog(content: Text('Funcionalidade a implementar')),
+              );
+            }
+          );
+        },
         child: new Container(
             child: new Row(
           mainAxisAlignment: MainAxisAlignment.center,
