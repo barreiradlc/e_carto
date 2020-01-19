@@ -1,1 +1,1 @@
-var host = 'https://ae-teste.herokuapp.com';
+String host = 'https://ae-teste.herokuapp.com';

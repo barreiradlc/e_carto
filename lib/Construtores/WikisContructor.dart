@@ -4,6 +4,7 @@ class ScreenArguments {
   final String thumbnail;
   final DateTime updated_at;
   var steps;
+  final user_id;
 
 
   ScreenArguments(
@@ -11,6 +12,7 @@ class ScreenArguments {
     this.description, 
     this.thumbnail, 
     this.updated_at,
-    this.steps
+    this.steps,
+    this.user_id
   );
 }

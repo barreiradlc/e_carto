@@ -81,6 +81,7 @@ class WikiState extends State<Wikis> {
                         wikis[index]['avatar']['url'],
                         DateTime.parse(wikis[index]['updated_at']),
                         wikis[index]['steps'],
+                        null,
                       ),
                     );
                   },
@@ -133,15 +134,15 @@ class WikiState extends State<Wikis> {
                   ))));
         },
       ),
-      floatingActionButton: FloatingActionButton(
-          // When the user presses the button, show an alert dialog containing
-          // the text that the user has entered into the text field.
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.green,
-          onPressed: () {Navigator.pushNamed(context, '/wiki/form');},
-          tooltip: 'Criar Wiki',
-          child: Icon(Icons.add),
-        ),
+      // floatingActionButton: FloatingActionButton(
+      //     // When the user presses the button, show an alert dialog containing
+      //     // the text that the user has entered into the text field.
+      //     foregroundColor: Colors.white,
+      //     backgroundColor: Colors.green,
+      //     onPressed: () {Navigator.pushNamed(context, '/wiki/form');},
+      //     tooltip: 'Criar Wiki',
+      //     child: Icon(Icons.add),
+      //   ),
     );
   }
 }

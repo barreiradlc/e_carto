@@ -67,6 +67,12 @@ class TabsState extends State<Tabs> {
             ),
           ),
           ListTile(
+            title: Text('Perfil'),
+            onTap: () {
+              Navigator.pushNamed(context, '/perfil');
+            },
+          ),
+          ListTile(
             title: Text('Estoque'),
             onTap: () {
               Navigator.pushNamed(context, '/estoque');
@@ -75,7 +81,7 @@ class TabsState extends State<Tabs> {
           ListTile(
             title: Text('Sair'),
             onTap: () {
-              print('sair');
+              Navigator.pushReplacementNamed(context, '/login');
             },
           )
         ],

@@ -11,6 +11,9 @@ class CarouselList extends StatefulWidget {
 
 class CarouselLisState extends State<CarouselList> {
   String uri = 'https://ae-teste.herokuapp.com';
+
+ 
+
   
   Widget build(BuildContext context) {
     // print(widget.steps);
@@ -32,6 +35,7 @@ class CarouselLisState extends State<CarouselList> {
     //       );
     //     }).toList(),
     //   );
+      
 
       return CarouselSlider(
       height: double.infinity,

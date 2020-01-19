@@ -1,8 +1,18 @@
 import 'package:e_carto/Construtores/WikisContructor.dart';
+import 'package:e_carto/Funcoes/UserData.dart';
 import 'package:e_carto/Parcial/Carousel.dart';
 import 'package:e_carto/Parcial/MateriaisList.dart';
 import 'package:e_carto/Recursos/Api.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import 'package:dio/dio.dart';
+
+import 'package:http/http.dart' as http;
+
+import 'dart:async';
+import 'dart:convert';
 
 import '../main.dart';
 
@@ -14,6 +24,19 @@ class DetailItemScreen extends StatefulWidget {
 }
 
 class DetailItems extends State<DetailItemScreen> {
+  var autor;
+  var jwt;
+  @override
+  void initState() {
+    super.initState();
+    void_getJWT().then((jwt) {
+      print(jwt);
+      setState(() {
+        jwt = jwt;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // var todo = ModalRoute.of(context).settings.arguments;
@@ -22,18 +45,113 @@ class DetailItems extends State<DetailItemScreen> {
         new DateFormat("MMMM d").format(item.updated_at);
     String update = DateFormat('dd/MM/y kk:mm').format(item.updated_at);
 
-    @override
-    void initState() {
-      super.initState();
-      print(item);
-    }
-
     var thumb;
     var passoAPasso;
     thumb = Image.asset('assets/logo.png');
 
     if (item.thumbnail != null) {
-      thumb = Image.network(host + item.thumbnail);
+      thumb = Image.network(host + item.thumbnail,
+          fit: BoxFit.cover, alignment: Alignment.center);
+    }
+
+    alertAutor() {
+      print('autor');
+      print(autor['email']);
+      print('autor');
+      // print(autor.email);
+      return showDialog(
+          context: context,
+          builder: (context) {
+            return Container(
+              height: 60,
+              child: AlertDialog(
+                content: Container(
+                    child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+
+                    autor['name'] != null?
+                      ListTile(
+                        title: InkWell(
+                          child: Text('Nome:' + autor.name),
+                          onTap: () => launch('https://docs.flutter.io/flutter/services/UrlLauncher-class.html'),
+                        ),
+                      ) :  Container(),
+
+                    autor['phone'] != null
+                        ? ListTile(
+                            title: Text('Telefone:' + autor['phone']),
+                          )
+                        :  Container(),
+
+                    autor['email'] != null
+                        ? ListTile(
+                            title: Text('Email: ' + autor['email']),
+                          )
+                        :  Container(),
+
+                    autor['instagram'] != null
+                        ? ListTile(
+                            title: Text('Instagram:'),
+                          )
+                        :  Container(),
+
+                    autor['pinterest'] != null
+                        ? ListTile(
+                            onTap: () => print('object'),
+                            title: Text('Pinterest:'),
+                          )
+                        : Container()
+                  ],
+                )),
+              ),
+            );
+          });
+    }
+
+    Future<String> contatarAutor(id) async {
+      void_getJWT().then((token) async {
+        print(token);
+        print(id.toString());
+        Dio dio = new Dio();
+        // dio.options.headers['content-Type'] = 'application/json';
+        dio.options.headers["authorization"] = token;
+        // dio.options.headers["authorization"] = "token ${token}";
+        var response = await dio.get(host + '/usuario/' + id.toString());
+        // print(response);
+        print('response.data');
+        print(response.data);
+        print('response.data');
+
+        setState(() {
+          autor = response.data;
+        });
+      });
+
+      // var response = await http.get(Uri.encodeFull(host + '/usuario/' + id.toString()),
+      //     headers: {"Authorization": jwt});
+
+      // var response = await http.get(Uri.encodeFull(host + '/usuario/' + id.toString()),
+      //   headers: {"Authorization": jwt});
+
+      // Response response;
+      // Dio dio = new Dio();
+      // response = await dio.get("/test?id=12&name=wendu");
+      // print(response.data.toString());
+// Optionally the request above could also be done as
+      // response =
+      //     await dio.get("/test", queryParameters: {"id": 12, "name": "wendu"});
+      // print(response.data.toString());
+
+      // print(jsonDecode(response.body));
+      // print(response.body);
+
+      // print(response.body);
+
+      alertAutor();
+
+      return "Sucesso";
     }
 
     // if (item.steps.length != 0) {
@@ -68,28 +186,23 @@ class DetailItems extends State<DetailItemScreen> {
           child: new ListView(children: <Widget>[
             Padding(
               padding: EdgeInsets.only(bottom: 15),
-              child: Container(
-                  height: 200.0,
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.green,
-                  child: thumb),
+              child: Container(height: 250.0, child: thumb),
             ),
             Padding(
               padding: EdgeInsets.all(25),
               child: Text(item.description), //
             ),
             Container(
-              child:RaisedButton(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                  Icon(Icons.chat),
-                  Text("Contatar autor")
-                ],), 
-                onPressed: () => print('contatar')
-              )
-            ),
+                child: RaisedButton(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(Icons.chat),
+                        Text("Contatar autor")
+                      ],
+                    ),
+                    onPressed: () => contatarAutor(item.user_id))),
             // MateriaisList(),
             // passoAPasso,
             Container(

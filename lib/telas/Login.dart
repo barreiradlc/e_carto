@@ -1,6 +1,5 @@
 import 'dart:io' show Platform; //at the top
 import 'package:flutter/foundation.dart' show TargetPlatform;
-import 'package:keyboard_visibility/keyboard_visibility.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,11 +29,7 @@ class _MyCustomFormState extends State<Login> {
 
   @override
   void initState() {
-    KeyboardVisibilityNotification().addNewListener(
-      onChange: (bool visible) {
-        print('keyboard $visible');
-      },
-    );    super.initState();
+    super.initState();
   }
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
@@ -83,6 +78,10 @@ class _MyCustomFormState extends State<Login> {
       // }
       await jwt.setString('jwt', res['token']);
       await jwt.setString('username', res['username']);
+      await jwt.setInt('id', res['id']);
+
+      print('IDUSUARIO');
+      print(res['id']);
 
       Navigator.pushReplacementNamed(context, '/home');
     } else {
