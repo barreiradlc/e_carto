@@ -6,6 +6,8 @@ class PerfilArguments {
   var instagram;
   var pinterest;
   var sobre;
+  var id;
+  var avatar;
 
 
   PerfilArguments(
@@ -16,5 +18,7 @@ class PerfilArguments {
     this.instagram,
     this.pinterest,
     this.sobre,
+    this.id,
+    this.avatar,
   );
 }

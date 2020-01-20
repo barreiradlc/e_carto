@@ -50,64 +50,63 @@ class _PerfilState extends State<Perfil> {
           print('editar Perfil');
         }
 
-        if( profile['id'] == id){
-      botaoPerfil = new FlatButton(
-        onPressed: () {
-        print('pokebola vai');
-          Navigator.pushNamed(
-                      context,
-                      '/user/form',
-                      arguments: PerfilArguments(
-                        profile['name'],
-                        profile['username'],
-                        profile['email'],
-                        profile['phone'],
-                        profile['instagram'],
-                        profile['pinterest'],
-                        profile['about'],
-                      )
+        if (profile['id'] == id) {
+          botaoPerfil = new FlatButton(
+            onPressed: () {
+              print('pokebola vai');
+              Navigator.pushNamed(context, '/user/form',
+                  arguments: PerfilArguments(
+                    profile['name'],
+                    profile['username'],
+                    profile['email'],
+                    profile['phone'],
+                    profile['instagram'],
+                    profile['pinterest'],
+                    profile['about'],
+                    profile['id'],
+                    profile['avatar'],
+                  ));
+              print('pokebola foi');
+            },
+            child: new Container(
+                child: new Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                new Icon(Icons.edit),
+                new SizedBox(
+                  width: MediaQuery.of(context).size.width / 30,
+                ),
+                new Text('EDITAR PERFIL')
+              ],
+            )),
+            color: Colors.blue[50],
           );
-        print('pokebola foi');
-        },
-        child: new Container(
-            child: new Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            new Icon(Icons.edit),
-            new SizedBox(
-              width: MediaQuery.of(context).size.width / 30,
-            ),
-            new Text('EDITAR PERFIL')
-          ],
-        )),
-        color: Colors.blue[50],
-      );
-    } else {
-      botaoPerfil = new FlatButton(
-        onPressed: () {
-          return showDialog(
-            context: context,
-            builder: (context) {
-              return Container(
-                child: AlertDialog(content: Text('Funcionalidade a implementar')),
-              );
-            }
+        } else {
+          botaoPerfil = new FlatButton(
+            onPressed: () {
+              return showDialog(
+                  context: context,
+                  builder: (context) {
+                    return Container(
+                      child: AlertDialog(
+                          content: Text('Funcionalidade a implementar')),
+                    );
+                  });
+            },
+            child: new Container(
+                child: new Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                new Icon(Icons.person),
+                new SizedBox(
+                  width: MediaQuery.of(context).size.width / 30 / 30,
+                ),
+                new Text('SEGUIR')
+              ],
+            )),
+            color: Colors.blue[50],
           );
-        },
-        child: new Container(
-            child: new Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            new Icon(Icons.person),
-            new SizedBox(
-              width: MediaQuery.of(context).size.width / 30 / 30,
-            ),
-            new Text('SEGUIR')
-          ],
-        )),
-        color: Colors.blue[50],
-      );
-    }
+        }
       });
     });
 
@@ -120,7 +119,7 @@ class _PerfilState extends State<Perfil> {
     var p = getPerfil();
 
     // print(p);
-    // print(profile);
+    print(profile);
   }
 
   @override
@@ -129,14 +128,18 @@ class _PerfilState extends State<Perfil> {
     final _height = MediaQuery.of(context).size.height;
     // final String imgUrl = 'https://pixel.nymag.com/imgs/daily/selectall/2017/12/26/26-eric-schmidt.w700.h700.jpg';
     var imgUrl = 'assets/logo.png';
+
     var avatar;
     avatar = Image.asset(
-                  'assets/logo.png',
-                  fit: BoxFit.fitWidth,
-                );
+      'assets/logo.png',
+      fit: BoxFit.fitWidth,
+    );
 
-
-    
+    if(profile['avatar']['url'] != null){
+      avatar = Image.network(
+        host + profile['avatar']['url']
+      );
+    }
 
     return profile != null
         ? new Stack(
@@ -173,7 +176,11 @@ class _PerfilState extends State<Perfil> {
                         ),
                         new CircleAvatar(
                           radius: _width < _height ? _width / 4 : _height / 4,
-                          backgroundImage: AssetImage(imgUrl),
+                          backgroundImage: 
+                          profile['avatar']['url'] != null ?
+                          NetworkImage(host + profile['avatar']['url'])
+                          :
+                          AssetImage(imgUrl),
                         ),
                         new SizedBox(
                           height: _height / 25.0,
@@ -246,20 +253,19 @@ class _PerfilState extends State<Perfil> {
                           height: _height / 30,
                           color: Colors.white,
                         ),
-                        // new Row(
-                        //   children: <Widget>[
-                        //     rowCell(343, 'POSTS'),
+
+                        new Row(
+                          children: <Widget>[
+                            // Text(profile[1]),
                         //     rowCell(673826, 'FOLLOWERS'),
                         //     rowCell(275, 'FOLLOWING'),
-                        //   ],),
+                          ],),
                         new Divider(height: _height / 30, color: Colors.white),
 
-                        
-                             new Padding(
-                                padding: new EdgeInsets.only(
-                                    left: _width / 8, right: _width / 8),
-                                child: botaoPerfil
-                              ),
+                        new Padding(
+                            padding: new EdgeInsets.only(
+                                left: _width / 8, right: _width / 8),
+                            child: botaoPerfil),
                       ],
                     ),
                   ))

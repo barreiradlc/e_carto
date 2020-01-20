@@ -67,26 +67,103 @@ class _FormUserPageState extends State<FormUserPage> {
 
     // print(jwt);
 
-    FormData formData = FormData.fromMap({
-      // 'title': nome.text,
-      // 'description': descricao.text,
-      // 'nature': isSwitched == true ? 'ARTE' : 'MATERIAL',
-      // 'price': int.parse(preco.text),
-      'nome': nome.text != nome.text ? nome.text : null,
-      'usuario': usuario.text != usuario.text ? usuario.text : null,
-      'email': email.text != email.text ? email.text : null,
-      'telefone': telefone.text != telefone.text ? telefone.text : null,
-      'instagram': instagram.text != instagram.text ? instagram.text : null,
-      'pinterest': pinterest.text != pinterest.text ? pinterest.text : null,
-      'sobre': sobre.text != sobre.text ? sobre.text : null,
-      // 'avatar': await MultipartFile.fromFile(_image,   )
-      'avatar': await MultipartFile.fromFile(_image.path,
-          filename: nome.text + ".png"),
+    FormData formData;
+    formData = FormData.fromMap({
+    //   'name': nome.text,
+      'email': email.text,
+    //   'phone': telefone.text,
+    //   'instagram': instagram.text,
+    //   'pinterest': pinterest.text,
+    //   'about': sobre.text,
+      
+    //   // 'avatar': _image.path != null ? await MultipartFile.fromFile(_image.path,
+    //   //     filename: nome.text + ".png"): null
     });
 
-    // print(formData);
 
-    response = await dio.post(
+
+
+
+    // verifica se contém usuario
+    if(usuario.text != ''){
+      formData.fields.add(
+        MapEntry(
+          'username', usuario.text
+        )
+      );    
+    }
+    if(nome.text != ''){
+      formData.fields.add(
+        MapEntry(
+          'name',nome.text
+        )
+      );
+    }
+    if(email.text != ''){
+      formData.fields.add(
+        MapEntry(
+          'email',email.text
+        )
+      );
+    }
+
+    if(telefone.text != ''){
+      formData.fields.add(
+        MapEntry(
+          'phone',telefone.text
+        )
+      );
+    }
+    if(instagram.text != ''){
+      formData.fields.add(
+        MapEntry(
+          'instagram',instagram.text
+        )
+      );
+    }
+    if(pinterest.text != ''){
+      formData.fields.add(
+        MapEntry(
+          'pinterest',pinterest.text
+        )
+      );
+    }
+    if(sobre.text != ''){
+      formData.fields.add(
+        MapEntry(
+          'sobre',sobre.text
+        )
+      );
+    }
+
+    print(formData.fields);
+    if(_image != null){
+      print('tem foto');
+      formData.files.add(
+        MapEntry(
+          'avatar', await MultipartFile.fromFile(_image.path,
+            filename: nome.text + ".png")
+        )
+      );
+    }
+
+
+
+
+    print(formData.fields);
+
+    // formData.files.addAll([
+    //   MapEntry(
+    //     'username': usuario.text != '' ? usuario.text : '';
+    //   )
+    // ]);
+
+
+
+
+
+
+    response = await dio.put(
       host + endpoint,
       data: formData,
       options: Options(headers: {
@@ -107,6 +184,9 @@ class _FormUserPageState extends State<FormUserPage> {
     if (res['id'] != null) {
       await Navigator.pushNamed(context, '/perfil');
     }
+
+    // REQ
+
 
     // http.Response response = await http.post(Uri.encodeFull(url + endpoint),
     //     body: {
